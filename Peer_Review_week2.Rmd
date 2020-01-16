@@ -1,0 +1,51 @@
+---
+title: "Access Map"
+date: "16th of January 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Access our lab
+
+The code under here will build a map using [leaflet](https://cran.r-project.org/web/packages/leaflet/leaflet.pdf) to access our laboratory easily! You have a link to the transportation website or a link to google maps directions if you want to get guided by your GPS!
+
+```{r cars}
+library(leaflet)
+LNIS.icon <- makeIcon(iconUrl = "https://www.chuv.ch/fileadmin/sites/ial/images/ial-logo-labo-nis.jpg",
+                      iconWidth = 31*67/117, ## 31 ratio(largeur*hauteur)
+                      iconHeight = 31, 
+                      iconAnchorX = 31*67/117/2, 
+                      iconAnchorY = 16)
+Parc.icon <- makeIcon(iconUrl = "https://p7.hiclipart.com/preview/668/80/941/road-signs-in-singapore-parking-car-park-traffic-sign-traffic-signs.jpg",
+                      iconWidth = 31*864/888, ## 31 ratio(largeur*hauteur)
+                      iconHeight = 31, 
+                      iconAnchorX = 31*864/888/2, 
+                      iconAnchorY = 16)
+Metro.icon <- makeIcon(iconUrl = "https://img.favpng.com/3/8/1/lausanne-metro-line-m2-rapid-transit-logo-png-favpng-pSqry1dDnNspudPf2k6yrwnJp.jpg",
+                      iconWidth = 31, ## 31 ratio(largeur*hauteur)
+                      iconHeight = 31, 
+                      iconAnchorX = 16, 
+                      iconAnchorY = 16)
+icons <- iconList(LNIS.icon, Metro.icon, Parc.icon)
+
+df.latlng <- data.frame(lat = c(46.542027,
+                                46.543074,
+                                46.543308),
+                        lng = c(6.663573,
+                                6.661374,
+                                6.663788),
+                        popup = c("Our Lab", 
+                                  "<a href = 'https://t-l.ch/webapp/#/map-and-page/timetable-lines'>Metro Station<br>Take line 'M2' direction 'Croisettes'</a>",
+                                  "<a href = 'https://www.google.ch/maps/dir//46.5433164,6.6637963/@46.543752,6.6615457,17z/data=!4m2!4m1!3e0'>Parking<br>Click for Google Maps directions</a>"))
+map.LNIS <- df.latlng %>% leaflet(width = 900) %>% 
+        addTiles() %>% addMarkers(lat = df.latlng$lat,
+                                  lng = df.latlng$lng,
+                                  popup = df.latlng$popup,
+                                  icon = icons)
+        
+map.LNIS
+```
+
